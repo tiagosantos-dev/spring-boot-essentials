@@ -1,58 +1,73 @@
 package springboot2essentials.service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import springboot2essentials.domain.Anime;
+import springboot2essentials.exception.BadRequestException;
+import springboot2essentials.mapper.AnimeMapper;
+import springboot2essentials.repository.AnimeRepository;
+import springboot2essentials.requests.AnimePostRequestBody;
+import springboot2essentials.requests.AnimePutRequestBody;
 
 @Service
 public class AnimeService {
-	private static List<Anime> listAnimes ;
 
-	static{
-		listAnimes = new ArrayList<>(List.of(new Anime(1L, "Drangon Ball"), new Anime(2L, "Naruto" )));
+	@Autowired
+	public AnimeRepository animeRepository ;
 
 
-	}
 
 	public List<Anime> getAll(){
 //			System.out.println(	dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
 //			System.out.println(this.listAnimes);
-			return 	listAnimes;
+			return this.animeRepository.findAll();
 		
 	}
 
-	public Anime findById(Long id){
-		return listAnimes.stream().filter(element-> element.getId().equals(id))
-					.findFirst().orElseThrow(()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not found Anime"));
+	public List<Anime> findByName(String name){
+		return this.animeRepository.findByName(name);
+				
+	}
+
+	public Anime findByIdOrThrowBadRequestException(Long id){
+		return this.animeRepository.findById(id)
+		.orElseThrow(()-> new BadRequestException("Not found Anime"));
+		
 
 	}
 
-	public Anime save(Anime anime){
-		anime.setId(Math.abs(ThreadLocalRandom.current().nextLong()));
-		listAnimes.add(anime);
-		return anime;
+	public Anime save(AnimePostRequestBody animePostRequestBody){
+		Anime anime = AnimeMapper.INSTANCE.toAnime(animePostRequestBody);
+		return this.animeRepository.save(anime);
+
 
 	}
-	public Boolean delete(Long id){
-		Anime animeExcluido =findById(id);
-		return listAnimes.remove(animeExcluido);
+	public void delete(Long id){
+		animeRepository.delete(findByIdOrThrowBadRequestException(id));
 	
 
 	}	
 
-	public Anime update(Anime anime, Long id){
-		delete(id);
-		return save(anime);
+	public Anime update(AnimePutRequestBody animePutRequestBody){
+		// CAUSARA UM ERRO CASO NAO ENCONTRE !! 
+		Anime savedAnime = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
+		Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+		anime.setId(savedAnime.getId());
+		return this.animeRepository.save(anime);
+		
 
 	}
 
+
+	public void converterAnime(Anime anime , AnimePostRequestBody animePostRequestBody){
+		anime.setName(anime.getName());
+
+	}
 
 
 

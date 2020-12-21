@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import springboot2essentials.domain.Anime;
+import springboot2essentials.requests.AnimePostRequestBody;
+import springboot2essentials.requests.AnimePutRequestBody;
 import springboot2essentials.service.AnimeService;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -45,13 +48,13 @@ public class AnimeController {
 
 	@GetMapping(path ="/{id}")
 	public ResponseEntity<Anime> findById(@PathVariable long id) {
-		return ResponseEntity.ok().body(this.animeService.findById(id));
+		return ResponseEntity.ok().body(this.animeService.findByIdOrThrowBadRequestException(id));
 	}
 
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<Anime> save(@RequestBody Anime anime){
+	public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime){
 		return new ResponseEntity<>(this.animeService.save(anime), HttpStatus.CREATED);
 
 	}
@@ -65,9 +68,17 @@ public class AnimeController {
 	}
 
 
-	@PutMapping(path="/{id}")
-	public ResponseEntity<Anime> update(@PathVariable Long id ,@RequestBody Anime anime) {
-		return ResponseEntity.ok().body(this.animeService.update(anime, id));
+	@PutMapping
+	public ResponseEntity<Anime> update(@RequestBody AnimePutRequestBody animePutRequestBody) {
+		return ResponseEntity.ok().body(this.animeService.update(animePutRequestBody));
+	}
+
+	@GetMapping
+	public ResponseEntity<List<Anime>> findByName(@RequestParam String name){
+		List<Anime> listAnime = this.animeService.findByName(name);
+		return ResponseEntity.ok().body(listAnime);
+
+
 	}
 
 }
