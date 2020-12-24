@@ -3,11 +3,14 @@ package springboot2essentials.requests;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 
 public class AnimePutRequestBody  implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    @NotEmpty(message = "Campo nome não pode ser nulo.")
     private String name;
 
     public AnimePutRequestBody(){

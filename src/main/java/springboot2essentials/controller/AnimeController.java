@@ -2,6 +2,8 @@ package springboot2essentials.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +56,7 @@ public class AnimeController {
 	
 	@PostMapping
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody anime){
+	public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody anime){
 		return new ResponseEntity<>(this.animeService.save(anime), HttpStatus.CREATED);
 
 	}
@@ -69,7 +71,7 @@ public class AnimeController {
 
 
 	@PutMapping
-	public ResponseEntity<Anime> update(@RequestBody AnimePutRequestBody animePutRequestBody) {
+	public ResponseEntity<Anime> update(@RequestBody @Valid AnimePutRequestBody animePutRequestBody) {
 		return ResponseEntity.ok().body(this.animeService.update(animePutRequestBody));
 	}
 
