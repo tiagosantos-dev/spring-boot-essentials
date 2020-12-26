@@ -5,6 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,9 +45,9 @@ public class AnimeController {
 	
 	@GetMapping(path = "list")
 	@ResponseBody
-	public  ResponseEntity<List<Anime>> list(){
+	public  ResponseEntity<Page<Anime>> list(Pageable pageable){
 		//System.out.println(	dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-		return ResponseEntity.ok().body(this.animeService.getAll());
+		return ResponseEntity.ok().body(this.animeService.getAll(pageable));
 	}
 
 	@GetMapping(path ="/{id}")

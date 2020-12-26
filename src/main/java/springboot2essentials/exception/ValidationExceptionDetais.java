@@ -11,8 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ValidationExceptionDetais extends ExceptionDetails {
     
-    protected String fields;
-    protected String messages;
+    public String fields;
+    public String messages;
 
     public ValidationExceptionDetais(String fields, String messages) {
         this.fields = fields;
@@ -26,5 +26,25 @@ public class ValidationExceptionDetais extends ExceptionDetails {
     this.detais = detais;
     this.developerMessage = developerMessage;
     this.timestamp = timestamp;
+    this.fields = fields;
+    this.messages = messages;
 }
+
+public String getFields() {
+    return fields;
+}
+
+public void setFields(String fields) {
+    this.fields = fields;
+}
+
+public String getMessages() {
+    return messages;
+}
+
+public void setMessages(String messages) {
+    this.messages = messages;
+}
+
+
 }

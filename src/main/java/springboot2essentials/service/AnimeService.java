@@ -3,6 +3,8 @@ package springboot2essentials.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,10 +24,10 @@ public class AnimeService {
 
 
 
-	public List<Anime> getAll(){
+	public Page<Anime> getAll(Pageable pageable){
 //			System.out.println(	dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
 //			System.out.println(this.listAnimes);
-			return this.animeRepository.findAll();
+			return this.animeRepository.findAll(pageable);
 		
 	}
 

@@ -11,11 +11,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public abstract class ExceptionDetails {
 
-    protected String title;
-    protected HttpStatus status;
-    protected String detais;
-    protected String developerMessage;
-    protected LocalDateTime timestamp;
+    public String title;
+    public HttpStatus status;
+    public String detais;
+    public String developerMessage;
+    public LocalDateTime timestamp;
 
 
 
