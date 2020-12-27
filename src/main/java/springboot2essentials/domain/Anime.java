@@ -34,6 +34,11 @@ public class Anime {
 		this.name = name;
 		
 	}
+	public Anime(String name) {
+		this.name = name;
+
+	}
+
 
 	public Anime(AnimePostRequestBody animePostRequestBody){
 		this.name = animePostRequestBody.getName();
