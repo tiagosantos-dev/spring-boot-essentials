@@ -31,6 +31,13 @@ public class AnimeService {
 		
 	}
 
+	public List<Anime> getAll( ){
+//			System.out.println(	dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+//			System.out.println(this.listAnimes);
+		return this.animeRepository.findAll();
+
+	}
+
 	public List<Anime> findByName(String name){
 		return this.animeRepository.findByName(name);
 				

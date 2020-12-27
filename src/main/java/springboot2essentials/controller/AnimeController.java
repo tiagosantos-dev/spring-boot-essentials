@@ -50,13 +50,23 @@ public class AnimeController {
 		return ResponseEntity.ok().body(this.animeService.getAll(pageable));
 	}
 
+
+	@GetMapping(path = "all")
+	@ResponseBody
+	public  ResponseEntity<List<Anime>> all( ){
+		//System.out.println(	dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+		return ResponseEntity.ok().body(this.animeService.getAll());
+	}
+
 	@GetMapping(path ="/{id}")
+	@ResponseBody
 	public ResponseEntity<Anime> findById(@PathVariable long id) {
 		return ResponseEntity.ok().body(this.animeService.findByIdOrThrowBadRequestException(id));
 	}
 
 	
 	@PostMapping
+
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public ResponseEntity<Anime> save(@RequestBody @Valid AnimePostRequestBody anime){
 		return new ResponseEntity<>(this.animeService.save(anime), HttpStatus.CREATED);
